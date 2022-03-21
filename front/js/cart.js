@@ -10,28 +10,32 @@ fetch(serveurKanap)
     //récupere le json de l'appel
     //c'est à dire la liste des produits
     console.log(myJson);
+      let products = [ 'price'];
+      console.log(products);
 
-  })
-// Variable qui récupère les articles du panier dans le local storage
-let canapé = JSON.parse(localStorage.getItem("canapé"));
+      price = window.price.filter( function(price) {
+        // return ( (price.test === '0') && (price.isok === '0') ); 
+        return price.products_id === 1;
+    }); 
+  });
+       
+  // Variable qui récupère les articles du panier dans le local storage
+  let canapé = JSON.parse(localStorage.getItem("canapé"));
 
-// Variable pour stocker les id de chaque articles présent dans le panier
-let products = [];
+  // Variable qui récupère l'orderId envoyé comme réponse par le serveur lors de la requête POST
+  let orderId = "";
 
-// Variable qui récupère l'orderId envoyé comme réponse par le serveur lors de la requête POST
-let orderId = "";
-
-// Condition de vérification si le panier existe et ou est vide et modification texte
-if (canapé === null || canapé.length === 0) {
+  // Condition de vérification si le panier existe et ou est vide et modification texte
+  if (canapé === null || canapé.length === 0) {
   document.querySelector("#Panier").textContent = "Le panier est vide !";
-} else {
+  } else {
   document.querySelector("#Panier").textContent = "Votre panier";
-}
+  }
 
-for (products of canapé) {
-  document.querySelector(
-    "#cart__items"
-  ).innerHTML += `<article class="cart__item" data-id="${products._id}" data-color="${products.color}">
+    for (products of canapé) {
+      document.querySelector(
+      "#cart__items"
+      ).innerHTML += `<article class="cart__item" data-id="${products._id}" data-color="${products.color}">
         <div class="cart__item__img">
             <img src="${products.image}" alt="${products.altTxt}">
         </div>
@@ -54,11 +58,11 @@ for (products of canapé) {
         </div>
      </article>`;
 
-  // Récupération des Id de chaque articles et envoi dans le tableau de la variable products[]
-  //products.push(products.id);
-  console.log(products);
-}
-
+      // Récupération des Id de chaque articles et envoi dans le tableau de la variable products[]
+      //products.push(products.id);
+      console.log(products);
+    }
+   
 // Fonction récupération des prix des articles et somme totale
 //???
 
@@ -85,7 +89,7 @@ let functionQuanttity = () => {
   console.log(quantity);
   return quantity;
 };
-
+  
 // Fonction mise à jour du local storage products
 
 let LocalStorageProducts = () => {
@@ -287,13 +291,15 @@ validationBtn.addEventListener("click", function(event) {
         return false;
       }
   }
-//creer une fonction 
+  function controlFormulaire() {
+    
+    let formulaire = document.getElementsByClassName("cart__order");
     //contrôle de validation
-    if (controlFirstName() &&
+    if  (formulaire) { (controlFirstName() &&
       controlLastName() &&
       controlAddress() &&
       controlCity() &&
-      controlEmail()) {
+      controlEmail()) 
       //il faut enregistrer le formulaire dans le localStorage
       localStorage.setItem("contact", JSON.stringify(contact));
       document.getElementById("order").value = "Commande passer !";
@@ -301,7 +307,8 @@ validationBtn.addEventListener("click", function(event) {
     } else {
       error("remplir le formulaire");
     }
-    
+  }
+  controlFormulaire();
     /********************************FIN GESTION DU FORMULAIRE*******************************************/
 
 
@@ -335,7 +342,7 @@ validationBtn.addEventListener("click", function(event) {
      };
 }); 
 /******************************* FIN REQUÊTE DU SERVEUR ET POST DES DONNÉES**************************************/
-/*
+
 // Maintenir le contenu du localStorage dans le champs du formulaire
 
 let dataFormulaire = JSON.parse(localStorage.getItem("contact"));
@@ -349,5 +356,5 @@ if (dataFormulaire) {
 } else {
   console.log("Le formulaire est vide");
 }
-*/
+
 
