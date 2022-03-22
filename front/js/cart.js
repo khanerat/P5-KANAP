@@ -1,24 +1,35 @@
-
 const serveurKanap = "http://localhost:3000/api/products";
 
-fetch(serveurKanap)
-  .then((response) => {
-    //récupere le résultat brut de l'appel
-    return response.json();
-  })
-  .then((myJson) => {
-    //récupere le json de l'appel
-    //c'est à dire la liste des produits
-    console.log(myJson);
-      let products = [ 'price'];
-      console.log(products);
+  fetch(serveurKanap)
+    .then((response) => {
+      //récupere le résultat brut de l'appel
+      return response.json();
+    })
+    .then((data) => {
+      //récupere le json de l'appel
+      //c'est à dire la liste des produits
+      console.log(data);
+      
+      //fitre de l id et de price
+      const produit = ['_id', 'price'];
 
-      price = window.price.filter( function(price) {
-        // return ( (price.test === '0') && (price.isok === '0') ); 
-        return price.products_id === 1;
-    }); 
-  });
-       
+      const result = produit.filter(produit => produit.length > 2);
+
+      console.log(result);
+    });
+
+    //fonction price 
+      
+      /*  
+     for (let key of Object.keys(localStorage)) {     
+       console.log(key, localStorage.getItem(key))
+     }
+     
+     window.addEventListener('storage', function(event) {
+       console.log(event)
+     })
+     */
+  
   // Variable qui récupère les articles du panier dans le local storage
   let canapé = JSON.parse(localStorage.getItem("canapé"));
 
@@ -65,80 +76,79 @@ fetch(serveurKanap)
    
 // Fonction récupération des prix des articles et somme totale
 //???
+      let functionPrice = () => {
+        console.log(canapé);
+        let found = canapé.map((element) => element.totalPrice);
+        console.log(found);
 
-let functionPrice = () => {
-  console.log(canapé);
-  let found = canapé.map((element) => element.totalPrice);
-  console.log(found);
-
-  const reducer = (precedenteValue, couranteValue) => precedenteValue + couranteValue;
-  let totale = found.reduce(reducer);
-  console.log(totale);
-  return totale;
-};
+        const reducer = (precedenteValue, couranteValue) => precedenteValue + couranteValue;
+        let totale = found.reduce(reducer);
+        console.log(totale);
+        return totale;
+      }
 
 // Fonction récupération des quantités des articles et quantité totale
 
-let functionQuanttity = () => {
-  console.log(canapé);
-  let found2 = canapé.map((element) => element.quantity);
-  console.log(found2);
+  let functionQuanttity = () => {
+    console.log(canapé);
+    let found2 = canapé.map((element) => element.quantity);
+    console.log(found2);
 
-  const reducer = (precedenteValue, couranteValue) => precedenteValue + couranteValue;
-  let quantity = found2.reduce(reducer);
-  console.log(quantity);
-  return quantity;
-};
+    const reducer = (precedenteValue, couranteValue) => precedenteValue + couranteValue;
+    let quantity = found2.reduce(reducer);
+    console.log(quantity);
+    return quantity;
+  };
   
 // Fonction mise à jour du local storage products
 
-let LocalStorageProducts = () => {
-  localStorage.setItem("canapé", JSON.stringify(canapé));
-};
+  let LocalStorageProducts = () => {
+    localStorage.setItem("canapé", JSON.stringify(canapé));
+  };
 
 // Fonction d'injection dans le DOM des donnés addPrice et addQuant
 
-function injectSommeQuant() {
-  // Appel de la fonction functionPrice qui nous retourne la variable somme
-  let sommeTotale = functionPrice();
-  //Injection de la somme totale dans le DOM
-  document.querySelector("#totalPrice").textContent = sommeTotale;
+  function injectSommeQuant() {
+    // Appel de la fonction functionPrice qui nous retourne la variable somme
+    let sommeTotale = functionPrice();
+    //Injection de la somme totale dans le DOM
+    document.querySelector("#totalPrice").textContent = sommeTotale;
 
-  localStorage.setItem("sommeTotale", JSON.stringify(sommeTotale));
+    localStorage.setItem("sommeTotale", JSON.stringify(sommeTotale));
 
-  // Appel de la fonction functionQuantity qui nous retourne la variable quant
-  let quantTotale = functionQuanttity();
+    // Appel de la fonction functionQuantity qui nous retourne la variable quant
+    let quantTotale = functionQuanttity();
 
-  //injection de la quantité des articles dans le DOM
-  document.querySelector("#totalQuantity").textContent = quantTotale;
+    //injection de la quantité des articles dans le DOM
+    document.querySelector("#totalQuantity").textContent = quantTotale;
 
-  LocalStorageProducts();
-}
-injectSommeQuant();
+    LocalStorageProducts();
+  }
+  injectSommeQuant();
 
-console.log(canapé);
-let itemQuantity = Array.from(document.querySelectorAll(".itemQuantity"));
-let sousTotal = Array.from(document.querySelectorAll("#sousTotal"));
-let screenQuantity = Array.from(document.querySelectorAll("#quantité"));
+  console.log(canapé);
+    let itemQuantity = Array.from(document.querySelectorAll(".itemQuantity"));
+    let sousTotal = Array.from(document.querySelectorAll("#sousTotal"));
+    let screenQuantity = Array.from(document.querySelectorAll("#quantité"));
 
-itemQuantity.forEach(function (quantity, i) {
-  quantity.addEventListener("change", (event) => {
-    event.preventDefault();
-    let newArticlePrice = quantity.value * canapé[i].price;
-    console.log(quantity.value);
+  itemQuantity.forEach(function (quantity, i) {
+    quantity.addEventListener("change", (event) => {
+      event.preventDefault();
+      let newArticlePrice = quantity.value * canapé[i].price;
+      console.log(quantity.value);
 
-    screenQuantity[i].textContent = "Qté: " + quantity.value;
-    canapé[i].quantity = parseInt(quantity.value, 10);
+      screenQuantity[i].textContent = "Qté: " + quantity.value;
+      canapé[i].quantity = parseInt(quantity.value, 10);
 
-    sousTotal[i].textContent =
-      "Prix total pour cet article: " + newArticlePrice + " €";
-    canapé[i].totalPrice = newArticlePrice;
+      sousTotal[i].textContent =
+        "Prix total pour cet article: " + newArticlePrice + " €";
+      canapé[i].totalPrice = newArticlePrice;
 
-    console.log(`le prix de ${canapé[i].name} et passé à ${newArticlePrice}`);
+      console.log(`le prix de ${canapé[i].name} et passé à ${newArticlePrice}`);
 
-    injectSommeQuant();
+      injectSommeQuant();
+    });
   });
-});
 
 
 
@@ -174,7 +184,6 @@ itemQuantity.forEach(function (quantity, i) {
       btnSuppression();
   
 
-
 /*************************************  LE FORMULAIRE ********************************/
 
 //acquisition du bouton
@@ -195,17 +204,18 @@ validationBtn.addEventListener("click", function(event) {
     console.log(contact)
 
     /***********************************REGEX**********************************/
+    
     //regEx prenom
     function regExPrenomNom(value) {
       return /^[A-Z][A-Za-z\é\è\ê\-]+$/.test(value);
     }
-    //regEx address
-    function regExAddress(value)  {
-      return /[a-zA-Z0-9.,-_]{5,50}[]{0,2}/.test(value);
-    }
     //regExCity
     function regExCity(value) {
       return /[a-zA-Z\é\è\ê\-]+/.test(value);
+    }
+    //regEx address
+    function regExAddress(value)  {
+      return /[a-zA-Z0-9.,-_]{5,50}[]{0,2}/.test(value);
     }
     //regEx email
     function regExEmail(value)  {
@@ -303,12 +313,15 @@ validationBtn.addEventListener("click", function(event) {
       //il faut enregistrer le formulaire dans le localStorage
       localStorage.setItem("contact", JSON.stringify(contact));
       document.getElementById("order").value = "Commande passer !";
+      
       sendServer();
     } else {
       error("remplir le formulaire");
+      
     }
   }
   controlFormulaire();
+  
     /********************************FIN GESTION DU FORMULAIRE*******************************************/
 
 
@@ -341,8 +354,9 @@ validationBtn.addEventListener("click", function(event) {
     
      };
 }); 
-/******************************* FIN REQUÊTE DU SERVEUR ET POST DES DONNÉES**************************************/
 
+/******************************* FIN REQUÊTE DU SERVEUR ET POST DES DONNÉES**************************************/
+/*
 // Maintenir le contenu du localStorage dans le champs du formulaire
 
 let dataFormulaire = JSON.parse(localStorage.getItem("contact"));
@@ -356,5 +370,5 @@ if (dataFormulaire) {
 } else {
   console.log("Le formulaire est vide");
 }
-
+*/
 
