@@ -9,18 +9,23 @@ const serveurKanap = "http://localhost:3000/api/products";
       //récupere le json de l'appel
       //c'est à dire la liste des produits
       console.log(data);
+    
+      //fitre de l id 
+      let produit = ['colors', '_id', 'name', 'price', 'imageUrl', 'description', 'altTxt'];
+        const selectId = (_id) => {
+      produit = produit.filter(produit => produit._id = _id)
+      }
+      selectId();
+      console.log(produit);
+
+    })
       
-      //fitre de l id et de price
-      const produit = ['_id', 'price'];
-
-      const result = produit.filter(produit => produit.length > 2);
-
-      console.log(result);
-    });
+     
+    
 
     //fonction price 
       
-      /*  
+      /*
      for (let key of Object.keys(localStorage)) {     
        console.log(key, localStorage.getItem(key))
      }
