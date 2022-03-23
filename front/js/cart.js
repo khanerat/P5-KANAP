@@ -1,3 +1,5 @@
+
+
 const serveurKanap = "http://localhost:3000/api/products";
 
   fetch(serveurKanap)
@@ -5,41 +7,27 @@ const serveurKanap = "http://localhost:3000/api/products";
       //récupere le résultat brut de l'appel
       return response.json();
     })
-    .then((data) => {
+    .then((products) => {
       //récupere le json de l'appel
-      //c'est à dire la liste des produits
-      console.log(data);
-    
-      //fitre de l id 
-      let produit = ['colors', '_id', 'name', 'price', 'imageUrl', 'description', 'altTxt'];
-        const selectId = (_id) => {
-      produit = produit.filter(produit => produit._id = _id)
+      //c'est à dire la liste des produit
+      //console.log(products);
+
+      let produit = [];
+       
+         
+      for (let id in produit) {
+        console.log(produit[id]);
       }
-      selectId();
-      console.log(produit);
-
-    })
-      
-     
     
-
-    //fonction price 
+    });
       
-      /*
-     for (let key of Object.keys(localStorage)) {     
-       console.log(key, localStorage.getItem(key))
-     }
-     
-     window.addEventListener('storage', function(event) {
-       console.log(event)
-     })
-     */
-  
-  // Variable qui récupère les articles du panier dans le local storage
-  let canapé = JSON.parse(localStorage.getItem("canapé"));
+   
+     // Variable qui récupère les articles du panier dans le local storage
+     let canapé = JSON.parse(localStorage.getItem("canapé"));
 
-  // Variable qui récupère l'orderId envoyé comme réponse par le serveur lors de la requête POST
-  let orderId = "";
+     // Variable qui récupère l'orderId envoyé comme réponse par le serveur lors de la requête POST
+     let orderId = ""; 
+     
 
   // Condition de vérification si le panier existe et ou est vide et modification texte
   if (canapé === null || canapé.length === 0) {
@@ -319,13 +307,14 @@ validationBtn.addEventListener("click", function(event) {
       localStorage.setItem("contact", JSON.stringify(contact));
       document.getElementById("order").value = "Commande passer !";
       
-      sendServer();
+      
     } else {
       error("remplir le formulaire");
       
     }
   }
   controlFormulaire();
+  sendServer();
   
     /********************************FIN GESTION DU FORMULAIRE*******************************************/
 
