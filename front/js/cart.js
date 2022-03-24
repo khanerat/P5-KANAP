@@ -7,27 +7,80 @@ const serveurKanap = "http://localhost:3000/api/products";
       //récupere le résultat brut de l'appel
       return response.json();
     })
-    .then((products) => {
+    .then((myJson) => {
       //récupere le json de l'appel
       //c'est à dire la liste des produit
-      //console.log(products);
+      console.log(myJson);
 
-      let produit = [];
+      let products = ['colors', '_id', 'name', 'price',, 'imageUrl', 'description', 'altTxt']  
+
+        const filterProducts = (arr, requete) => {
+          return arr.filter(el =>  el.toLowerCase().indexOf(requete.toLowerCase()) !== -1);
+        }
+
+        console.log(filterProducts(products, '_id'));
+
+         products = ((element, _id) => {
+          for (c = 0; c < element._id.length; c++) {
+            if (element._id[c] == '_id') {
+              return element;
+            }
+          }
+        })
+       
+      
+      
+       console.table(myJson.filter(products));
+    });
+
+
+        function recupPrice(element) {
+          for (let r = 0; r < element.price.length; r++) {
+            if(element.price[r] === 'price') {
+              return element;
+            }
+          }
+        }
+
+      console.table(products.filter(recupPrice));
+
+       
+    
+
+
+/*
+      let produit = ['colors', '_id', 'name', 'price', 'imageUrl', 'description', 'altTxt'];
+
+      
+    /*
+      //fitre pour récuperer l ID 
+      
+        const selectProduct = (_id) => {
+        products = products.filter(json => json._id == _id)    
+      }
+       selectProduct();
+       console.log(products); 
+       
+       
        
          
       for (let id in produit) {
-        console.log(produit[id]);
+        console.log(products[id]);
       }
-    
+      
     });
+     */ 
       
    
      // Variable qui récupère les articles du panier dans le local storage
      let canapé = JSON.parse(localStorage.getItem("canapé"));
 
      // Variable qui récupère l'orderId envoyé comme réponse par le serveur lors de la requête POST
-     let orderId = ""; 
-     
+     let orderId = "";
+
+    //fonction price 
+      
+      
 
   // Condition de vérification si le panier existe et ou est vide et modification texte
   if (canapé === null || canapé.length === 0) {
