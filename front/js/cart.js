@@ -7,69 +7,90 @@ const serveurKanap = "http://localhost:3000/api/products";
       //récupere le résultat brut de l'appel
       return response.json();
     })
-    .then((myJson) => {
-      //récupere le json de l'appel
-      //c'est à dire la liste des produit
-      console.log(myJson);
+      .then((myJson) => {
+        //récupere le json de l'appel
+        //c'est à dire la liste des produit
+        console.log(myJson);
 
-      let products = ['colors', '_id', 'name', 'price',, 'imageUrl', 'description', 'altTxt']  
 
-        const filterProducts = (arr, requete) => {
+
+           /****recup ID****/
+
+          let products = ['colors', '_id', 'name', 'price',, 'imageUrl', 'description', 'altTxt'];
+
+          const filterMyJson = (arr, requete) => {
           return arr.filter(el =>  el.toLowerCase().indexOf(requete.toLowerCase()) !== -1);
-        }
-
-        console.log(filterProducts(products, '_id'));
-
-         products = ((element, _id) => {
-          for (c = 0; c < element._id.length; c++) {
-            if (element._id[c] == '_id') {
-              return element;
-            }
           }
-        })
-       
-      
-      
-       console.table(myJson.filter(products));
-    });
 
+          console.log(filterMyJson(products, '_id'));
 
-        function recupPrice(element) {
-          for (let r = 0; r < element.price.length; r++) {
-            if(element.price[r] === 'price') {
-              return element;
+          products = ((element, _id) => {
+            for (c = 0; c < element._id.length; c++) {
+              if (element._id[c] == '_id') {
+                return element;
+              }
             }
-          }
-        }
-
-      console.table(products.filter(recupPrice));
+          });   
+          console.table(myJson.filter(products));
 
        
+          /****prix****/
+        
+        
+          function produitPrice(objet) {
+            objet.products = "price";
+          }
+          let produits = { price: 'price' };
+        
+          console.log(produits);
+
+          produitPrice(produits);
+          console.log(produits.price);
+
+
+          
+          /****include id et price****/
+        
+          function argumentsOldProducts() {
+            return [].includes.call(arguments, 'id', 'price');
+          }
+          console.log(argumentsOldProducts('id','price'));
+           
+            
+          
+          /****récupère le deuxiéme élément <p> du document****/
+            
+          let para = document.getElementsByTagName("p")[1];
+          let attr = para.attributes;
+           
+
+          function produitAttributes() {
+            let paragraph = document.getElementById("paragraph");
+            let result = document.getElementById("result");
+          
+              /****verifier les attributs****/
+
+              if (paragraph.hasAttributes()){
+                let attrs = paragraph.attributes;
+                let output = "";
+                  for( let a = attrs.length - 1; a >= 0; a--) {
+                    output += attrs[a].price + "->" + attrs[a].value;
+                  }
+                  result.value = output;
+              } else {
+                result.value = "no attributes";
+              }
+            }
+          produitAttributes();
+          console.log(paragraph);
+      });
+          
+      
+        
     
 
 
-/*
-      let produit = ['colors', '_id', 'name', 'price', 'imageUrl', 'description', 'altTxt'];
-
       
-    /*
-      //fitre pour récuperer l ID 
-      
-        const selectProduct = (_id) => {
-        products = products.filter(json => json._id == _id)    
-      }
-       selectProduct();
-       console.log(products); 
-       
-       
-       
-         
-      for (let id in produit) {
-        console.log(products[id]);
-      }
-      
-    });
-     */ 
       
    
      // Variable qui récupère les articles du panier dans le local storage
@@ -78,31 +99,31 @@ const serveurKanap = "http://localhost:3000/api/products";
      // Variable qui récupère l'orderId envoyé comme réponse par le serveur lors de la requête POST
      let orderId = "";
 
-    //fonction price 
+      //fonction price 
       
       
 
-  // Condition de vérification si le panier existe et ou est vide et modification texte
-  if (canapé === null || canapé.length === 0) {
-  document.querySelector("#Panier").textContent = "Le panier est vide !";
-  } else {
-  document.querySelector("#Panier").textContent = "Votre panier";
-  }
+      // Condition de vérification si le panier existe et ou est vide et modification texte
+      if (canapé === null || canapé.length === 0) {
+        document.querySelector("#Panier").textContent = "Le panier est vide !";
+      } else {
+      document.querySelector("#Panier").textContent = "Votre panier";
+      }
 
-    for (products of canapé) {
-      document.querySelector(
-      "#cart__items"
-      ).innerHTML += `<article class="cart__item" data-id="${products._id}" data-color="${products.color}">
-        <div class="cart__item__img">
+      for (products of canapé) {
+        document.querySelector(
+        "#cart__items"
+        ).innerHTML += `<article class="cart__item" data-id="${products._id}" data-color="${products.color}">
+          <div class="cart__item__img">
             <img src="${products.image}" alt="${products.altTxt}">
-        </div>
-        <div class="cart__item__content">
+          </div>
+          <div class="cart__item__content">
             <div class="cart__item__content__description">
                 <h2>${products.name}</h2>
                 <p>Couleur du produit: ${products.color}</p>
                 <p>Prix unitaire: ${products.price}€</p>
             </div>
-        <div class="cart__item__content__settings">
+          <div class="cart__item__content__settings">
             <div id="jojo" class="cart__item__content__settings__quantity">
                 <p id="quantité">Qté : ${products.quantity} </p>
                 <p id="sousTotal">Prix total pour cet article: ${products.totalPrice}€</p> 
@@ -111,9 +132,9 @@ const serveurKanap = "http://localhost:3000/api/products";
             <div class="cart__item__content__settings__delete">
                 <p class="deleteItem"><button>Supprimer</button></p>
             </div>
-        </div>
-        </div>
-     </article>`;
+          </div>
+          </div>
+        </article>`;
 
       // Récupération des Id de chaque articles et envoi dans le tableau de la variable products[]
       //products.push(products.id);
